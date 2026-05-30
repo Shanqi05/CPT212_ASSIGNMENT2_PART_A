@@ -162,9 +162,10 @@ def boyer_moore_search(text, pattern):
     # Track iterations for detailed output
     loop_count = 1
     
-    print(f"\n--- Starting Boyer-Moore Execution ---")
-    print(f"Text: {text} (Length: {n})")
-    print(f"Pattern: {pattern} (Length: {m})")
+    # Initialize alignment pointer (position where pattern starts in text)
+    s = 0 
+    # Store all match indices found during search
+    match_indices = []
     
     while s <= (n - m):
         # KEY INSIGHT: Compare pattern characters from RIGHT to LEFT
@@ -179,7 +180,6 @@ def boyer_moore_search(text, pattern):
         if j < 0:
             # Perfect match found at position s
             match_indices.append(s)
-            print(f"[Loop {loop_count}]: Match discovered at index {s}!")
             
             # Calculate shift for potential overlapping matches using good suffix rule
             s += good_suffix_table[0]
@@ -201,14 +201,8 @@ def boyer_moore_search(text, pattern):
             # This ensures we never miss a potential match while maximizing progress
             actual_shift = max(bad_char_shift, good_suffix_shift)
             
-            print(f"[Loop {loop_count}]: Mismatch at text[{s + j}]='{mismatched_char}' vs pattern[{j}]='{pattern[j]}'")
-            print(f"         Heuristic Shifts -> Bad Char: {bad_char_shift}, Good Suffix: {good_suffix_shift}")
-            print(f"         Selected Optimal Shift: {actual_shift}")
-            
             # Apply the shift to new alignment position
             s += actual_shift
-            
-        loop_count += 1
         
     return match_indices
 
@@ -263,7 +257,7 @@ def display_good_suffix_table(pattern, bpos, good_suffix_table):
 def interactive_boyer_moore():
     """
     Interactive Boyer-Moore Algorithm Interface
-    Allows user to input text and pattern, displays preprocessing tables.
+    Allows user to input text and pattern, displays preprocessing tables and search results.
     """
     print("\n═════════════════════════════════════════════════")
     print(" BOYER-MOORE STRING MATCHING - PREPROCESSING    ")
@@ -286,9 +280,20 @@ def interactive_boyer_moore():
     bad_char_table = preprocess_bad_character(pattern)
     bpos, good_suffix_table = preprocess_good_suffix(pattern)
     
-    # Display preprocessing tables only
+    # Display preprocessing tables
     display_bad_character_table(pattern, bad_char_table)
     display_good_suffix_table(pattern, bpos, good_suffix_table)
+    
+    # Run the search
+    results = boyer_moore_search(text, pattern)
+    
+    # Display search results
+    print()
+    if results:
+        for idx in results:
+            print(f"Pattern is found in index {idx} of the text")
+    else:
+        print("No match pattern found")
     print()
 
 
