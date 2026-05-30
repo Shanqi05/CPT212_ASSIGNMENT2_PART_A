@@ -241,17 +241,17 @@ def display_good_suffix_table(pattern, bpos, good_suffix_table):
         good_suffix_table (list): The preprocessed good suffix table
     """
     print("\nGOOD SUFFIX RULE TABLE")
-    print("┌──────────┬──────────┬──────────┐")
-    print("│ Index    │ Bpos     │ Shift    │")
-    print("├──────────┼──────────┼──────────┤")
+    print("┌──────────┬─────────────────────┬──────────┐")
+    print("│ Index    │ Border Position     │ Shift    │")
+    print("├──────────┼─────────────────────┼──────────┤")
     
     m = len(pattern)
     
     # Display each position with its bpos and shift values
     for i in range(len(good_suffix_table)):
-        print(f"│ {i:^8} │ {bpos[i]:^8} │ {good_suffix_table[i]:^8} │")
+        print(f"│ {i:^8} │ {bpos[i]:^8}            │ {good_suffix_table[i]:^8} │")
     
-    print("└──────────┴──────────┴──────────┘")
+    print("└──────────┴─────────────────────┴──────────┘")
 
 
 def interactive_boyer_moore():
